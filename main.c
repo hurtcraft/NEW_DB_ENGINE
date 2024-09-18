@@ -9,7 +9,7 @@ int main(){
     init(&env);
 
     CreateStatement createStatement={0};
-    treatCreateStatement("CREATE TABLE dbTest (AGE INT KEY PRIMARY KEY,PRENOM VARCHAR(256) PRIMARY KEY NOT NULL);",&createStatement,&env);
+    treatCreateStatement("CREATE TABLE dbTest (AGE INT PRIMARY KEY,PRENOM VARCHAR(256) PRIMARY KEY NOT NULL FOREIGN KEY REFERENCES PERSONNES(ABC));",&createStatement,&env);
 
 
 

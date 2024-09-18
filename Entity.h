@@ -11,13 +11,14 @@ typedef struct Field{
     // NAME;TYPE;SIZE;PK?;NN?;AI;UNQ;FK?;
 
     char name[MEDIUM_BUFFER];
-    int type;
+    char type[NANO_BUFFER];
     int size;
     int isPrimaryKey;
     int isNotNull;
     int isAutoIncrement;
     int isUnique;
     char foreignKey[MEDIUM_BUFFER];
+    int faileAtInitFlag;
 }Field;
 
 

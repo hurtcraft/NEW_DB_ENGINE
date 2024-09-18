@@ -6,6 +6,7 @@
         "constant.h": "c",
         "sstream": "c",
         "regex": "c",
-        "entity.h": "c"
+        "entity.h": "c",
+        "windows.h": "c"
     }
 }

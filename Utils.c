@@ -10,7 +10,8 @@
 #include <string.h>
 
 char** split(char *str, char *delimiter) {
-    static char *buffer[BIG_BUFFER] = {0};  // Tableau statique de pointeurs pour les tokens
+    char **buffer = malloc(BIG_BUFFER*sizeof(char*));
+    
     char *cpy=strdup(str);
     char *strToken = strtok(cpy, delimiter);  // Token initial
     int nbToken = 0;
@@ -21,8 +22,7 @@ char** split(char *str, char *delimiter) {
     }
 
     buffer[nbToken] = NULL; 
-    printf("str1 %s\n",str);
-    printf("str2 %s\n",cpy);
+
 
     return buffer;
 }

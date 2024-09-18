@@ -12,21 +12,28 @@ void createTable(CreateStatement *createStatement,Env *env);
 void parseTableBody(CreateStatement *createStatement);
 Field parseField(char* field);
 int getTypeSize(char* type);
+char* getForeignKey(char *args);
 
-static char* createStatemntPattern="(CREATE) (DATABASE|TABLE) (\\w+)\\s*(\\(([^}]*)\\))?\\s*\\;$";
-static char* validFieldRegexPattern="(\\w+)\\s+(INT|VARCHAR\\((d+)\\))";
-static regex_t createStatementRegex;
-static regex_t validFieldRegex;
+
 static char* NOT_NUll_ARGS="NOT NULL";
 static char* AUTO_INC_ARGS="AUTO_INCREMENT";
 static char* PRIMARY_KEY_ARGS="PRIMARY KEY";
 static char* UNIQUE_ARGS="UNIQUE";
 static char* FOREIGN_KEY_ARGS="FOREIGN KEY REFERENCES";
 
+static char* createStatemntPattern="(CREATE) (DATABASE|TABLE) (\\w+)\\s*(\\(([^}]*)\\))?\\s*\\;$";
+static char* validFieldRegexPattern="(\\w+)\\s+(INT|VARCHAR\\((d+)\\))";
+static char* foreignKeyRegexPattern="^.*FOREIGN KEY REFERENCES\\s+(\\w+\\(\\w+\\))";
+static regex_t createStatementRegex;
+static regex_t validFieldRegex;
+static regex_t foreignKeyRegex;
+
+
 
 int initCreateStatementRegex(){
     regcomp(&createStatementRegex,createStatemntPattern,REG_EXTENDED);
     regcomp(&validFieldRegex,validFieldRegexPattern,REG_EXTENDED);
+    regcomp(&foreignKeyRegex,foreignKeyRegexPattern,REG_EXTENDED);
 }
 int treatCreateStatement(char *str, CreateStatement *createStatement,Env *env){
    if(isCreateStatement(str,createStatement)){
@@ -91,11 +98,16 @@ void parseTableBody(CreateStatement *createStatement){
     char **splitBuffer=split(trimedArgs,",");
     char *copy;
     Field f;
+        // NAME;TYPE;SIZE;PK?;NN?;AI;UNQ;FK?;
+
     for (size_t i = 0; splitBuffer[i]!=NULL; i++)
     {
-        printf("splitBuffer %s\n",splitBuffer[i]);
-        split(strdup(splitBuffer[i])," ");
-        // parseField(copy);
+        // split(strdup(splitBuffer[i])," ");
+        f=parseField(splitBuffer[i]);
+        if(f.faileAtInitFlag==FAILED_AT_INIT){
+            printf("pb parsefield \n");
+        }
+        printf("fielkd %s %s %d %d %d %d %d %s \n ",f.name,f.type,f.size,f.isPrimaryKey,f.isNotNull,f.isAutoIncrement,f.isUnique,f.foreignKey);
     }
     
 
@@ -108,46 +120,78 @@ Field parseField(char* field){
     // structure d'un champs : 
     // NAME;TYPE;SIZE;PK?;NN?;AI;UNQ;FK?;
     char**splitBuffer=split(field," ");
-    Field f;
-    // if(nbElt<2){
-    //     f.type=FAILED_AT_INIT;
-    //     return f;
-    // }
-    char *nom=splitBuffer[0];
-    char *type=splitBuffer[1];
-    int size =getTypeSize(type);
 
+    Field f={0};
+    int nbElt=0;
+    for (size_t i = 0; splitBuffer[i] !=NULL; i++)
+    {
+        ++nbElt;
+    }
+    if(nbElt<2){
+        f.faileAtInitFlag=FAILED_AT_INIT;
+        return f;
+    }
+
+    // char *nom=splitBuffer[0];
+    // char *type=splitBuffer[1];
+
+    char nom[NANO_BUFFER]={0};
+    char type[NANO_BUFFER]={0};
+
+    strncpy(f.name,splitBuffer[0],strlen(splitBuffer[0]));
+    strncpy(f.type,splitBuffer[1],strlen(splitBuffer[1]));
+
+    int size =getTypeSize(f.type);
+    if(size==-1){
+        f.faileAtInitFlag=FAILED_AT_INIT;
+        return f;
+    }
+    f.size=size;
     int argsStartIndex=strlen(nom)+strlen(type)+2;// 2 pour les 2 espaces
     int argsEndIndex=strlen(field);
 
-
     char *args=subString(field,argsStartIndex,argsEndIndex);
-    // printf("args %s\n",args);
 
     char subArgs[NANO_BUFFER]={0};
     if(strstr(args,PRIMARY_KEY_ARGS)!=NULL){
         printf("est PK\n");
+        f.isPrimaryKey=1;
     };
     if(strstr(args,UNIQUE_ARGS)!=NULL){
         printf("est UNQ\n");
+        f.isUnique=1;
     }
     if(strstr(args,AUTO_INC_ARGS)!=NULL){
         printf("est AUTO_INC\n");
+        f.isAutoIncrement=1;
     }
     if(strstr(args,NOT_NUll_ARGS)!=NULL){
         printf("est NN\n");
+        f.isNotNull=1;
     }
     if(strstr(args,FOREIGN_KEY_ARGS)!=NULL) {
         printf("est FK\n");
+        strcpy(f.foreignKey,getForeignKey(args));
     }
-    // for(size_t i =0;splitBuffer[i]!=NULL;i++){
-        
-    //     printf("%d %s \n",i,splitBuffer[i]);
-    // }
-    printf("finu\n");
+    freeTabOfArray((void**)splitBuffer);
     return f;
 }
-
+char* getForeignKey(char *args){
+    regmatch_t matches[2];
+    int ret =regexec(&foreignKeyRegex,args,2,matches,0);
+    static char result[NANO_BUFFER]={0};
+    if(ret==0){
+        printf("FK trouve \n");
+        regmatch_t fk=matches[1];
+        int len=fk.rm_eo-fk.rm_so;
+        
+        strncpy(result,args+fk.rm_so,len);
+        printf("fk %s\n",result);
+        
+        return result;
+    }
+    return NULL;
+}
 int getTypeSize(char* type){
     static char* INT_STR="INT";
     static char* VARCHAR_STR="VARCHAR(";
