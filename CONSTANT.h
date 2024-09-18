@@ -1,0 +1,30 @@
+#ifndef CONSTANT
+#define CONSTANT
+
+#define NANO_BUFFER 32
+#define TINY_BUFFER 64
+#define SMALL_BUFFER 128
+#define MEDIUM_BUFFER 256
+#define BIG_BUFFER 512
+#define HUGE_BUFFER 1024
+
+
+#define SHOW_DATABASES 0
+#define SHOW_TABLES 1
+
+#define MAX_TABLE_ATTRIBUTES 64
+
+
+#define METADATA_TABLES_PATH "\\.tables"
+
+#define FLAG_AUTO_INCREMENT "AUTO_INCREMENT"
+#define FLAG_NOT_NULL "NOT NULL"
+#define FLAG_PK "PRIMARY KEY"
+
+
+#define UNKNOW_DB "UNKNOW"
+
+
+#define FAILED_AT_INIT -1
+
+#endif

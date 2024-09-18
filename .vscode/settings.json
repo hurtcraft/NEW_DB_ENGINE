@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "constant.h": "c",
+        "sstream": "c",
+        "regex": "c",
+        "entity.h": "c"
+    }
+}
