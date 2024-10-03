@@ -5,10 +5,11 @@ void initRegex();
 // int getMatch(char*originStr,regmatch_t *match,char* buffer);
 
 int initCreateStatementRegex();
+int initShowStatementRegex();
 
 
-int treatCreateStatement(char *str, CreateStatement *createStatement,Env *env);
-int treatShowStatement(char *str);
+int treatCreateStatement(char *str,Env *env);
+int treatShowStatement(char *str, ShowStatement *showStatement, Env* env);
 int treatDropStatement(char *str);
 int treatUseStatement(char *str);
 int treatAlterStatement(char *str);

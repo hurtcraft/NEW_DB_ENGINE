@@ -9,8 +9,16 @@ int main(){
     init(&env);
 
     CreateStatement createStatement={0};
-    treatCreateStatement("CREATE TABLE dbTest (AGE INT PRIMARY KEY,PRENOM VARCHAR(256) PRIMARY KEY NOT NULL FOREIGN KEY REFERENCES PERSONNES(ABC));",&createStatement,&env);
+    ShowStatement showStatement={0};
+    //treatCreateStatement("CREATE TABLE dbTest (AGE INT PRIMARY KEY,PRENOM VARCHAR(256) PRIMARY KEY NOT NULL FOREIGN KEY REFERENCES PERSONNES(ABC));",&createStatement,&env);
+    treatCreateStatement("CREATE DATABASE dbTest2;",&env);
+    treatCreateStatement("CREATE DATABASE dbTest3;",&env);
+    treatCreateStatement("CREATE DATABASE dbTest4;",&env);
+    treatCreateStatement("CREATE DATABASE dbTest5;",&env);
+    
 
+    strcpy(env.currentDatabase,"C:/SUPA_DATABASE_ENGINE/dbTest2");
+    treatShowStatement("SHOW TABLES;",&showStatement,&env);
 
 
     printf("[FIN]");

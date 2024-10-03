@@ -31,6 +31,7 @@ typedef struct CreateStatement
 
 typedef struct ShowStatement{
     char objectToShow[TINY_BUFFER];
+    char objectName[TINY_BUFFER];
 }ShowStatement;
 
 

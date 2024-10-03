@@ -13,7 +13,7 @@ void parseTableBody(CreateStatement *createStatement);
 Field parseField(char* field);
 int getTypeSize(char* type);
 char* getForeignKey(char *args);
-
+void resetCreateStatement(CreateStatement *createStatement);
 
 static char* NOT_NUll_ARGS="NOT NULL";
 static char* AUTO_INC_ARGS="AUTO_INCREMENT";
@@ -35,9 +35,11 @@ int initCreateStatementRegex(){
     regcomp(&validFieldRegex,validFieldRegexPattern,REG_EXTENDED);
     regcomp(&foreignKeyRegex,foreignKeyRegexPattern,REG_EXTENDED);
 }
-int treatCreateStatement(char *str, CreateStatement *createStatement,Env *env){
-   if(isCreateStatement(str,createStatement)){
-        executeCreateStatement(createStatement,env);
+int treatCreateStatement(char *str,Env *env){
+    CreateStatement createStatement={0};
+    resetCreateStatement(&createStatement);
+   if(isCreateStatement(str,&createStatement)){
+        executeCreateStatement(&createStatement,env);
    }
     return 0;
 }
@@ -80,11 +82,14 @@ void executeCreateStatement(CreateStatement *createStatement,Env *env){
 
 
 void createDatabase(CreateStatement *createStatement,Env *env){
-    char *path=strcat(env->WORPLACE,createStatement->objectName);
-    char *metaData=strcat(path,METADATA_TABLES_PATH);
-    
+    char worplace[TINY_BUFFER];
+    strcpy(worplace,env->WORPLACE);
+    char *path=strcat(worplace, createStatement->objectName);
     createFolder(path);
+    char *metaData=strcat(path,METADATA_TABLES_PATH);
     createFolder(metaData);
+
+    worplace[0]='\0';
 }
 
 void createTable(CreateStatement *createStatement,Env *env){
@@ -206,3 +211,12 @@ int getTypeSize(char* type){
     return -1;
 }
 
+void resetCreateStatement(CreateStatement *createStatement){
+    memset(createStatement->args,0,BIG_BUFFER);
+    memset(createStatement->objectName,0,TINY_BUFFER);
+    memset(createStatement->objectToCreate,0,NANO_BUFFER);
+
+
+}
+
+    
