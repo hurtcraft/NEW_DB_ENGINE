@@ -9,9 +9,9 @@ int initShowStatementRegex();
 
 
 int treatCreateStatement(char *str,Env *env);
-int treatShowStatement(char *str, ShowStatement *showStatement, Env* env);
+int treatShowStatement(char *str, Env* env);
+int treatUseStatement(char *str,Env *env);
 int treatDropStatement(char *str);
-int treatUseStatement(char *str);
 int treatAlterStatement(char *str);
 int treatSelectStatement(char *str);
 int treatInsertStatement(char *str);

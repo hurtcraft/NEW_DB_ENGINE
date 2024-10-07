@@ -34,6 +34,9 @@ typedef struct ShowStatement{
     char objectName[TINY_BUFFER];
 }ShowStatement;
 
+typedef struct UseStatement{
+    char databaseName[TINY_BUFFER];
+}UseStatement;
 
 
 

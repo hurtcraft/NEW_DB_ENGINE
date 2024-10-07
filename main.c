@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Functions.h"
 
+#include <dirent.h>
 int main(){
     Env env={0};
     init(&env);
@@ -17,9 +18,11 @@ int main(){
     treatCreateStatement("CREATE DATABASE dbTest5;",&env);
     
 
-    strcpy(env.currentDatabase,"C:/SUPA_DATABASE_ENGINE/dbTest2");
-    treatShowStatement("SHOW TABLES;",&showStatement,&env);
+    strcpy(env.currentDatabase,"C:\\SUPA_DATABASE_ENGINE\\dbTest2");
 
+    // C:\SUPA_DATABASE_ENGINE\dbTest2\.tables
+
+    treatShowStatement("SHOW TABLES;",&env);
 
     printf("[FIN]");
     return 0;
