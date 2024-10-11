@@ -6,7 +6,7 @@ void initRegex();
 
 int initCreateStatementRegex();
 int initShowStatementRegex();
-
+int initUseStatementRegex();
 
 int treatCreateStatement(char *str,Env *env);
 int treatShowStatement(char *str, Env* env);

@@ -23,7 +23,6 @@ char** split(char *str, char *delimiter) {
 
     buffer[nbToken] = NULL; 
 
-
     return buffer;
 }
 
@@ -95,6 +94,23 @@ int init(Env *env)
     strcpy(env->WORPLACE, strcat(destination, "SUPA_DATABASE_ENGINE\\"));
     strcpy(env->currentDatabase,UNKNOW_DB);
     createFolder(env->WORPLACE);
-    // printf("dir %s\n",destination);
     return 0;
+}
+char *getCurrentDatabaseName(Env *env){
+    if(strcmp(env->currentDatabase,UNKNOW_DB)==0){
+        return UNKNOW_DB;
+    }
+    int start=strlen(env->WORPLACE);
+    int end=strlen(env->currentDatabase); 
+    printf("%d %d \n",start,end);
+    return subString(env->currentDatabase,start,end);
+}
+
+
+char *formatToCSV(char *buffer,char *data,int endFlag){
+    //check taille buffer
+    strcat(buffer,data);
+    if(!endFlag){
+        strcat(buffer,";");
+    }
 }

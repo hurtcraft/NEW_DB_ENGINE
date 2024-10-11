@@ -53,3 +53,21 @@ int writeFile(FILE *f,char *data){
     fclose(f);
     return 0;
 }
+
+int fileExist(char *path){
+    FILE *f=fopen(path,"r");
+    if(f==NULL){
+        return 0;
+    }
+    fclose(f);
+    return 1;
+}
+
+int dirExist(char *path){
+    DIR *dir=opendir(path);
+    if(dir!=NULL){
+        closedir(dir);
+        return 1;
+    }
+    return 0;
+}

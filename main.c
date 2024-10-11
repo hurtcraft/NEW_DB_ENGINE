@@ -9,21 +9,21 @@ int main(){
     Env env={0};
     init(&env);
 
-    CreateStatement createStatement={0};
-    ShowStatement showStatement={0};
-    //treatCreateStatement("CREATE TABLE dbTest (AGE INT PRIMARY KEY,PRENOM VARCHAR(256) PRIMARY KEY NOT NULL FOREIGN KEY REFERENCES PERSONNES(ABC));",&createStatement,&env);
-    treatCreateStatement("CREATE DATABASE dbTest2;",&env);
-    treatCreateStatement("CREATE DATABASE dbTest3;",&env);
-    treatCreateStatement("CREATE DATABASE dbTest4;",&env);
-    treatCreateStatement("CREATE DATABASE dbTest5;",&env);
+    treatCreateStatement("CREATE TABLE matable (AGE INT PRIMARY KEY,PRENOM VARCHAR(256) PRIMARY KEY NOT NULL FOREIGN KEY REFERENCES PERSONNES(ABC));",&env);
+    // treatCreateStatement("CREATE DATABASE dbTest2;",&env);
+    // treatCreateStatement("CREATE DATABASE dbTest3;",&env);
+    // treatCreateStatement("CREATE DATABASE dbTest4;",&env);
+    // treatCreateStatement("CREATE DATABASE dbTest5;",&env);
     
 
-    strcpy(env.currentDatabase,"C:\\SUPA_DATABASE_ENGINE\\dbTest2");
+    //strcpy(env.currentDatabase,"C:\\SUPA_DATABASE_ENGINE\\dbTest2");
+    //faire structure table
+    //treatShowStatement("SHOW TABLES;",&env);
 
-    // C:\SUPA_DATABASE_ENGINE\dbTest2\.tables
 
-    treatShowStatement("SHOW TABLES;",&env);
-
+    //treatUseStatement("USE dbTest3;",&env);
+    // printf("la db name : %s\n ",getCurrentDatabaseName(&env));
+    
     printf("[FIN]");
     return 0;
 }

@@ -29,6 +29,8 @@ typedef struct CreateStatement
     char args[BIG_BUFFER];
 }CreateStatement;
 
+
+
 typedef struct ShowStatement{
     char objectToShow[TINY_BUFFER];
     char objectName[TINY_BUFFER];
@@ -37,6 +39,8 @@ typedef struct ShowStatement{
 typedef struct UseStatement{
     char databaseName[TINY_BUFFER];
 }UseStatement;
+
+
 
 
 

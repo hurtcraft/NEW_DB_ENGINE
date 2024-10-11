@@ -12,6 +12,7 @@ void freeTabOfArray(void **tabOfArray);
 void systemError(char *msg);
 void systemMessage(char *msg);
 int init(Env *env);
+char *getCurrentDatabaseName(Env *env);
 
 //StringUtils
 void resetString(char *str);
@@ -22,7 +23,12 @@ struct dirent **listFileInFolder(struct dirent **direntList, char *pathFolder);
 int createFolder(char *path);
 int createFile(char* path);
 int writeFile(FILE *f,char *data);
+int fileExist(char *path);
+int dirExist(char *path);
 //RegexUtils
 void initRegex();
 
+
+//annexe
+char *formatToCSV(char *buffer,char *data,int endFlag);
 #endif

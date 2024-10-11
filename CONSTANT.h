@@ -27,5 +27,16 @@
 
 #define FAILED_AT_INIT -1
 
+// NAME;TYPE;SIZE;PK?;NN?;AI;UNQ;FK?;
+#define TABLE_INDEX_NAME 0
+#define TABLE_INDEX_TYPE 1
+#define TABLE_INDEX_SIZE 2
+#define TABLE_INDEX_PK 3
+#define TABLE_INDEX_NN 4
+#define TABLE_INDEX_AI 5
+#define TABLE_INDEX_UNQ 6
+#define TABLE_INDEX_FK 7
+
+
 
 #endif
